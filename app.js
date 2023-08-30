@@ -15,34 +15,31 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-
+// user's name
 var name;
-var displayMsg;
-
-// TODO: Set up a socket.io connection handler, which will be called whenever a new client connects.
-// TODO: The handler should emit a 'welcome' event to the client, with a message and a name.
-// TODO: The handler should also emit a 'disconnected' event when another client disconnects.
-// TODO: The handler should also broadcast a message whenever it receives a chat message.
 
 io.on('connection', (socket) => {
-  console.log("a new user has connected!");
-  name = "";
-  
+  // stores user's name on connection
   socket.on('join', (username) => {
     name = username;
+    console.log(`User '${username}' has connected!`);
     socket.broadcast.emit('message', `${username} just joined the chat!`);
   });
 
+  // when user sends message
   socket.on('chatMessage', (username, msg) => {
     socket.broadcast.emit('message', `${username}: ` + msg);
   });
 
+  // when user disconnects
   socket.on('disconnect', () => {
+    console.log(`User '${name}' has disconnected!`);
     socket.broadcast.emit('message', `${name} left the chat!`);
   });
 
 });
 
+// puts server port on 3000
 server.listen(process.env.PORT || 3000, () => {
   console.log('Server listening on :3000');
 });

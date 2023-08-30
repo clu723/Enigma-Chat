@@ -14,9 +14,9 @@
 	<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
 
-	<!-- Pre-running a name for the user-->
+	<!-- Name for the user-->
 	<script>
-		// This is the name of the user
+		// This is where user enters their name
 		var name = prompt("Enter your name:");
 	</script>
 
@@ -27,6 +27,7 @@
 		<h0>ENIGMACHAT</h0>
 	</div>
 
+	<!-- Input for the Enigma Translator-->
 	<div class="enigma-section">
 		<div class="title-text">
 			<h1>Enigma Translator</h1>
@@ -44,6 +45,7 @@
 		<button id="settings-section-btn">Show Settings</button>
 	</div>
 
+	<!-- Rotor settings for the Enigma Translator-->
 	<div class="settings" id="settings-section">
 		<div class="settings-content">
 			<div class="settings-section">
@@ -241,6 +243,7 @@
 		</div>
 	</div>
 
+	<!-- Translation script for the Enigma Translator-->
 	<script type="text/javascript">
 		$(function () {
 			var isValidInput = function (input) {
@@ -447,24 +450,26 @@
 		});
 	</script>
 
+	<!-- Credits section for the Enigma Translator-->
 	<footer>
 		<div class="footer" id="footer">
 			<p>Huge Credits to <a href="http://www.matheusportela.com">Matheus V. Portela</a> for creating the Enigma
 				Translator!</p>
 		</div>
 	</footer>
-	
 
-	<!-- Where messages will be included -->
-	<ul id="messages"></ul>
-
+	<!-- Where user enters their message-->
 	<form action="">
 		<input id="m-input" placeholder="Enter your message..." autocomplete="off" required />
 	</form>
 
+	<!-- Activate socket.io for messages to appear fast-->
 	<script src="/socket.io/socket.io.js"></script>
+
+	<!-- Jquery is needed for the Enigma Translators-->
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-	<script src="adjusts.js"></script>
+
+	<!-- Translates message that user inputted-->
 	<script type="text/javascript">
 		var isValidInput = function (input) {
 			return /^([a-zA-Z]\s?)*$/g.test(input);
@@ -552,11 +557,6 @@
 		};
 
 		var updateOutput = function () {
-			// $('#enigma-output').val(encode($('#enigma-input').val()));
-			// const listOfMessages = Array.from(document.querySelectorAll('#messages>li:last-child'));
-			// listOfMessages.forEach((element) => {
-			// 	element.innerHTML = encode(element.textContent.toUpperCase());
-			// });
 			const charInput = Array.from($('#m-input').val());
 			const caseIndex = [];
 
@@ -653,7 +653,7 @@
 
 		var socket = io();
 
-		// TODO: Cause the event joining message on the reception of a name
+		// Cause the event joining message on the reception of a name
 		socket.emit('join', name);
 
 		// if form is submitted, cause a chat message event
@@ -661,7 +661,7 @@
 			// will prevent page reloading
 			e.preventDefault();
 
-			// TODO: sending the name of the writer with the value of the form as a chat message
+			// Sending the name of the writer with the value of the form as a chat message
 			socket.emit('chatMessage', name, $('#m-input').val());
 
 			// Add a list item with what you say on your screen
@@ -674,12 +674,16 @@
 			return false;
 		});
 
-		// TODO: if a chat message event happens ("comes in"), take that message and add it to the displayed messages
+		// If a chat message event happens ("comes in"), take that message and add it to the displayed messages
 		socket.on('message', (msg) => {
 			$('#messages').append($('<li id="displayMsg">').text(msg));
 		});
 
 	</script>
+
+	<!-- Where translated messages will appear-->
+	<ul id="messages"></ul>
+
 </body>
 
 </html>
